@@ -2,8 +2,8 @@ import streamlit as st
 import pandas as pd
 import joblib
 
-st.set_page_config(page_title="Kepler Exoplanet Classifier", page_icon="🪐")
 
+st.set_page_config(page_title="Kepler Exoplanet Classifier", page_icon="🪐")
 
 # Load the trained model and preprocessing files (loaded once and reused)
 @st.cache_resource
@@ -15,6 +15,72 @@ def load_files():
 
 
 model, imputer, feature_columns = load_files()
+
+# ---------- Space background: dark blue sky, stars and a satellite ----------
+st.markdown("""
+<style>
+[data-testid="stAppViewContainer"] {
+    background-color: #0B1026;
+    background-image:
+        radial-gradient(1.2px 1.2px at 25px 35px, #ffffff, transparent),
+        radial-gradient(1px 1px at 140px 110px, #dfe8ff, transparent),
+        radial-gradient(1.2px 1.2px at 260px 210px, #ffffff, transparent),
+        radial-gradient(1px 1px at 330px 60px, #cfdcff, transparent),
+        radial-gradient(1.6px 1.6px at 80px 170px, #ffffff, transparent),
+        radial-gradient(1px 1px at 410px 250px, #dfe8ff, transparent),
+        radial-gradient(1.4px 1.4px at 190px 330px, #ffffff, transparent),
+        radial-gradient(1px 1px at 470px 380px, #cfdcff, transparent),
+        radial-gradient(2.2px 2.2px at 120px 60px, #ffffff, transparent),
+        radial-gradient(1.8px 1.8px at 560px 420px, #e8eeff, transparent),
+        radial-gradient(2.4px 2.4px at 690px 150px, #ffffff, transparent),
+        linear-gradient(180deg, #060B20 0%, #0B1A40 55%, #12285A 100%);
+    background-size:
+        347px 263px, 347px 263px, 347px 263px, 347px 263px,
+        521px 419px, 521px 419px, 521px 419px, 521px 419px,
+        773px 611px, 773px 611px, 773px 611px,
+        100% 100%;
+    background-attachment: fixed;
+}
+[data-testid="stHeader"] {
+    background: rgba(0, 0, 0, 0);
+}
+.satellite {
+    position: fixed;
+    top: 60px;
+    right: 40px;
+    width: 240px;
+    z-index: 0;
+    pointer-events: none;
+}
+.satellite svg {
+    width: 100%;
+    height: auto;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# Satellite drawn with code at the top right (no image file needed)
+st.markdown("""
+<div class="satellite">
+<svg viewBox="0 0 520 260" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(260,140) rotate(-18) scale(1.2)">
+    <rect x="-200" y="-22" width="160" height="44" fill="#264E96" stroke="#A5B9DC" stroke-width="1.5"/>
+    <rect x="40" y="-22" width="160" height="44" fill="#264E96" stroke="#A5B9DC" stroke-width="1.5"/>
+    <path d="M-180 -22V22 M-160 -22V22 M-140 -22V22 M-120 -22V22 M-100 -22V22 M-80 -22V22 M-60 -22V22 M-200 0H-40
+             M60 -22V22 M80 -22V22 M100 -22V22 M120 -22V22 M140 -22V22 M160 -22V22 M180 -22V22 M40 0H200"
+          stroke="#4B73BE" stroke-width="1"/>
+    <path d="M-40 0H-22 M22 0H40" stroke="#A5B9DC" stroke-width="3"/>
+    <rect x="-22" y="-30" width="44" height="60" fill="#CDAC58" stroke="#EED48C" stroke-width="1.5"/>
+    <path d="M-22 -10H22 M-22 10H22" stroke="#AC8C44" stroke-width="1"/>
+    <path d="M0 -30V-46" stroke="#A5B9DC" stroke-width="2"/>
+    <path d="M-16 -46 Q0 -64 16 -46 Z" fill="#DADEEC" stroke="#F2F4FA" stroke-width="1"/>
+    <circle cx="0" cy="-58" r="3" fill="#FF786E"/>
+  </g>
+</svg>
+</div>
+""", unsafe_allow_html=True)
+# ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # Application title
 st.title("🪐 NASA Kepler Exoplanet Classification")
@@ -28,7 +94,6 @@ st.caption(
     "Each box starts at a typical value from the training data (median). "
     "Change the values you know and leave the rest as they are."
 )
-
 st.subheader("Enter Kepler Object Measurements")
 
 with st.expander("Orbital Measurements", expanded=True):
