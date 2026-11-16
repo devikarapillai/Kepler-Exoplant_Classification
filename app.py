@@ -86,7 +86,7 @@ st.markdown("""
 st.title("🪐 NASA Kepler Exoplanet Classification")
 
 st.write(
-    "This application uses a trained Random Forest model "
+    "This application uses a trained Balanced Random Forest model "
     "to classify Kepler objects as CONFIRMED, CANDIDATE or FALSE POSITIVE."
 )
 
